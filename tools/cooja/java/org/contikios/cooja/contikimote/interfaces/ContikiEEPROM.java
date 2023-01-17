@@ -38,10 +38,8 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
-import javax.xml.bind.DatatypeConverter;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
-
 import org.contikios.cooja.*;
 import org.contikios.cooja.contikimote.ContikiMoteInterface;
 import org.contikios.cooja.interfaces.PolledAfterActiveTicks;
@@ -278,7 +276,7 @@ public class ContikiEEPROM extends MoteInterface implements ContikiMoteInterface
 
       // Infinite boolean
       element = new Element("eeprom");
-      element.setText(DatatypeConverter.printBase64Binary(getEEPROMData()));
+      element.setText(Base64.getEncoder().encodeToString(getEEPROMData()));
       config.add(element);
 
       return config;
@@ -287,7 +285,7 @@ public class ContikiEEPROM extends MoteInterface implements ContikiMoteInterface
   public void setConfigXML(Collection<Element> configXML, boolean visAvailable) {
       for (Element element : configXML) {
         if (element.getName().equals("eeprom")) {
-          setEEPROMData(DatatypeConverter.parseBase64Binary(element.getText()));
+          setEEPROMData(Base64.getDecoder().decode(element.getText()));
         }
       }
   }
